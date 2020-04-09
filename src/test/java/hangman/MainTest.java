@@ -23,13 +23,33 @@ import org.junit.Test;
 public final class MainTest {
 
     @Test
-    public void failsAfterManyWrongAttempts() throws Exception {
-        final ByteArrayInputStream input = new ByteArrayInputStream(
-            "a\na\na\na\na\n".getBytes()
+    public void fails_after_many_wrong_attempts() {
+        // GIVEN
+        final Letters letters = new StreamLetters(
+            new ByteArrayInputStream(
+                "u\n".getBytes()
+            )
         );
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        new Main(input, output, 1).exec();
+        // WHEN
+        new Main(letters, output, 1, "mathematics").exec();
+        // THEN
         assertThat(output.toString(), containsString("You lost"));
+    }
+
+    @Test
+    public void succed_after_guess_the_word() {
+        // GIVEN
+        final Letters letters = new StreamLetters(
+            new ByteArrayInputStream(
+                "m\na\nt\nh\ne\ni\nc\ns\n".getBytes()
+            )
+        );
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        // WHEN
+        new Main(letters, output, 1, "mathematics").exec();
+        // THEN
+        assertThat(output.toString(), containsString("You won"));
     }
 
 }
