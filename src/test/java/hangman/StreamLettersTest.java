@@ -19,17 +19,17 @@ public class StreamLettersTest {
         ByteArrayInputStream bis = new ByteArrayInputStream("h\ne\nl\nl\no".getBytes());
         StreamLetters sut = new StreamLetters(bis);
         // WHEN
-        String h = sut.letter();
-        String e = sut.letter();
-        String l = sut.letter();
-        String l2 = sut.letter();
-        String o = sut.letter();
+        char h = sut.letter();
+        char e = sut.letter();
+        char l = sut.letter();
+        char l2 = sut.letter();
+        char o = sut.letter();
         // THEN
-        assertThat(h, equalTo("h"));
-        assertThat(e, equalTo("e"));
-        assertThat(l, equalTo("l"));
-        assertThat(l2, equalTo("l"));
-        assertThat(o, equalTo("o"));
+        assertThat(h, equalTo('h'));
+        assertThat(e, equalTo('e'));
+        assertThat(l, equalTo('l'));
+        assertThat(l2, equalTo('l'));
+        assertThat(o, equalTo('o'));
     }
 
     @Test(expected = NoMoreLettersException.class)
@@ -38,6 +38,6 @@ public class StreamLettersTest {
         ByteArrayInputStream bis = new ByteArrayInputStream("".getBytes());
         StreamLetters sut = new StreamLetters(bis);
         // WHEN
-        String word = sut.letter();
+        sut.letter();
     }
 }

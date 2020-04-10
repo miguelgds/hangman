@@ -23,9 +23,9 @@ public class Main {
     private final Letters letters;
     private final OutputStream output;
     private final int maxAttempts;
-    private final String wordToGuess;
+    private final WordToGuess wordToGuess;
 
-    public Main(final Letters letters, final OutputStream out, final int maxAttempts, String wordToGuess) {
+    public Main(final Letters letters, final OutputStream out, final int maxAttempts, WordToGuess wordToGuess) {
         this.letters = letters;
         this.output = out;
         this.maxAttempts = maxAttempts;
@@ -33,34 +33,16 @@ public class Main {
     }
 
     public static void main(final String... args) {
-        new Main(new StreamLetters(System.in), System.out, 5, args[0]).exec();
+        new Main(new StreamLetters(System.in), System.out, 5, new WordToGuess(args[0])).exec();
     }
 
     public void exec() {
-        boolean[] visible = new boolean[wordToGuess.length()];
         int mistakes = 0;
         try (final PrintStream out = new PrintStream(this.output)) {
-            boolean done = true;
-            while (mistakes < this.maxAttempts) {
-                done = true;
-                for (int i = 0; i < wordToGuess.length(); ++i) {
-                    if (!visible[i]) {
-                        done = false;
-                    }
-                }
-                if (done) {
-                    break;
-                }
+            while (mistakes < this.maxAttempts
+                    && !wordToGuess.guessed()) {
                 out.print("Guess a letter: ");
-                String letter = this.letters.letter();
-                boolean hit = false;
-                for (int i = 0; i < wordToGuess.length(); ++i) {
-                    if (String.valueOf(wordToGuess.charAt(i)).equals(letter)
-                            && !visible[i]) {
-                        visible[i] = true;
-                        hit = true;
-                    }
-                }
+                boolean hit = wordToGuess.guessLetter(this.letters.letter());
                 if (hit) {
                     out.print("Hit!\n");
                 } else {
@@ -71,16 +53,10 @@ public class Main {
                     ++mistakes;
                 }
                 out.append("The word: ");
-                for (int i = 0; i < wordToGuess.length(); ++i) {
-                    if (visible[i]) {
-                        out.print(wordToGuess.charAt(i));
-                    } else {
-                        out.print("?");
-                    }
-                }
+                out.append(wordToGuess.toString());
                 out.append("\n\n");
             }
-            if (done) {
+            if (wordToGuess.guessed()) {
                 out.print("You won!\n");
             } else {
                 out.print("You lost.\n");

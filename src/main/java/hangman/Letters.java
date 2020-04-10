@@ -1,5 +1,5 @@
 package hangman;
 
 public interface Letters {
-    String letter();
+    char letter();
 }

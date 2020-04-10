@@ -13,9 +13,9 @@ public final class StreamLetters implements Letters {
         this.letters = new Scanner(Objects.requireNonNull(stream));
     }
 
-    public String letter() {
+    public char letter() {
         try{
-            return String.valueOf(letters.next().charAt(0));
+            return letters.next().charAt(0);
         } catch (NoSuchElementException e){
             throw new NoMoreLettersException();
         }

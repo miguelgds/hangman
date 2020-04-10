@@ -32,7 +32,7 @@ public final class MainTest {
         );
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         // WHEN
-        new Main(letters, output, 1, "mathematics").exec();
+        new Main(letters, output, 1, new WordToGuess("mathematics")).exec();
         // THEN
         assertThat(output.toString(), containsString("You lost"));
     }
@@ -47,7 +47,7 @@ public final class MainTest {
         );
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         // WHEN
-        new Main(letters, output, 1, "mathematics").exec();
+        new Main(letters, output, 1, new WordToGuess("mathematics")).exec();
         // THEN
         assertThat(output.toString(), containsString("You won"));
     }
