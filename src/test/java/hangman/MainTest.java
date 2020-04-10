@@ -23,33 +23,33 @@ import org.junit.Test;
 public final class MainTest {
 
     @Test
-    public void fails_after_many_wrong_attempts() {
+    public void fails_after_many_wrong_attempts() throws Exception {
         // GIVEN
-        final Letters letters = new StreamLetters(
-            new ByteArrayInputStream(
-                "u\n".getBytes()
-            )
-        );
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        // WHEN
-        new Main(letters, output, 1, new WordToGuess("mathematics")).exec();
-        // THEN
-        assertThat(output.toString(), containsString("You lost"));
+        try(final ByteArrayInputStream input = new ByteArrayInputStream("u\n".getBytes());
+            final ByteArrayOutputStream output = new ByteArrayOutputStream();
+            final StreamGameNotifications notifications = new StreamGameNotifications(output);) {
+            final Letters letters = new StreamLetters(input);
+            Hangman hangman = new Hangman(letters, notifications);
+            // WHEN
+            new Main(hangman).exec("mathematics", 1);
+            // THEN
+            assertThat(output.toString(), containsString("You lost"));
+        }
     }
 
     @Test
-    public void succed_after_guess_the_word() {
+    public void succed_after_guess_the_word() throws Exception {
         // GIVEN
-        final Letters letters = new StreamLetters(
-            new ByteArrayInputStream(
-                "m\na\nt\nh\ne\ni\nc\ns\n".getBytes()
-            )
-        );
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        // WHEN
-        new Main(letters, output, 1, new WordToGuess("mathematics")).exec();
-        // THEN
-        assertThat(output.toString(), containsString("You won"));
+        try(final ByteArrayInputStream input = new ByteArrayInputStream("m\na\nt\nh\ne\ni\nc\ns\n".getBytes());
+            final ByteArrayOutputStream output = new ByteArrayOutputStream();
+            final StreamGameNotifications notifications = new StreamGameNotifications(output);) {
+            final Letters letters = new StreamLetters(input);
+            Hangman hangman = new Hangman(letters, notifications);
+            // WHEN
+            new Main(hangman).exec("mathematics", 1);
+            // THEN
+            assertThat(output.toString(), containsString("You won"));
+        }
     }
 
 }

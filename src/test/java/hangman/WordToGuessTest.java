@@ -40,6 +40,7 @@ public class WordToGuessTest {
         boolean guessed = sut.guessed();
         // THEN
         assertThat(guessed, is(true));
+        assertThat(sut.toString(), equalTo("hola"));
     }
 
     @Test
